@@ -1,0 +1,56 @@
+{
+  "variables": {
+    "aws_access_key": "",
+    "aws_secret_key": "",
+    "scala_version": "2.11",
+    "kafka_version": "0.10.1.1"
+  },
+  "builders": [{
+    "access_key": "{{user `aws_access_key`}}",
+    "secret_key": "{{user `aws_secret_key`}}",
+    "type": "amazon-ebs",
+    "vpc_id": "vpc-92c172f6",
+    "subnet_id" : "subnet-57876d21",
+    "region": "us-east-1",
+    "source_ami": "ami-9dcfdb8a",
+    "instance_type": "t2.micro",
+    "ssh_username": "ubuntu",
+    "ami_name": "ubuntu 16.04 kafka_{{user `scala_version`}}-{{user `kafka_version`}}",
+    "ami_users" : [ ]
+  }],
+
+  "provisioners": [
+    {
+      "type": "shell",
+      "inline": ["sudo mkdir /tmp/init-files",
+                "sudo chown root:ubuntu /tmp/init-files",
+                "sudo chmod 775 /tmp/init-files"]
+    },
+    {
+      "type": "file",
+      "source": "files/",
+      "destination": "/tmp/init-files/"
+    },
+    {
+      "type": "shell",
+      "script":  "scripts/java_build.sh",
+      "environment_vars" : [
+      ],
+      "execute_command": "{{ .Vars }} sudo -E bash '{{ .Path }}'"
+    },
+    {
+      "type": "shell",
+      "script":  "scripts/kafka_build.sh",
+      "environment_vars" : [
+        "SCALA_VERSION={{user `scala_version`}}",
+        "KAFKA_VERSION={{user `kafka_version`}}"
+      ],
+      "execute_command": "{{ .Vars }} sudo -E bash '{{ .Path }}'"
+    },
+    {
+      "type": "shell",
+      "script":  "scripts/cleanup.sh",
+      "execute_command": "{{ .Vars }} sudo -E bash '{{ .Path }}'"
+    }
+  ]
+}
