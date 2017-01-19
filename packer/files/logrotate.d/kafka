@@ -1,0 +1,9 @@
+/opt/kafka/log/kafka/*.log {
+       weekly
+       rotate 3
+       maxsize 100M
+       minsize 10M
+       copytruncate
+       notifempty
+       missingok
+}

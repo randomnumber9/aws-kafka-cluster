@@ -16,11 +16,11 @@ ln -s /opt/${KAFKA_FOLDER} /opt/kafka
 
 useradd --home-dir /opt/kafka-data --no-create-home --shell /usr/sbin/nologin --no-log-init kafka
 
-mkdir -p /opt/kafka-data /opt/kafka/log/kafka /opt/kafka/log/zookeeper
-chown kafka:kafka /opt/kafka-data /opt/kafka/log/kafka /opt/kafka/log/zookeeper
+#log4j automatically rotates, so we need to cleanup old logs with a cron or via log4j
+#cp /tmp/init-files/logrotate.d/* /etc/logrotate.d/
 
-cp /tmp/init-files/kafka.env /etc/default/kafka
-cp /tmp/init-files/zookeeper.env /etc/default/kafka-zookeeper
+cp /tmp/init-files/default/kafka.env /etc/default/kafka
+cp /tmp/init-files/default/zookeeper.env /etc/default/kafka-zookeeper
 
-cp /tmp/init-files/kafka.service /etc/systemd/system
-cp /tmp/init-files/kafka-zookeeper.service /etc/systemd/system
+cp /tmp/init-files/systemd/kafka.service /etc/systemd/system
+cp /tmp/init-files/systemd/kafka-zookeeper.service /etc/systemd/system

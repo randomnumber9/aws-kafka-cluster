@@ -33,6 +33,13 @@
     },
     {
       "type": "shell",
+      "script":  "scripts/cloudwatch.sh",
+      "environment_vars" : [
+      ],
+      "execute_command": "{{ .Vars }} sudo -E bash '{{ .Path }}'"
+    },
+    {
+      "type": "shell",
       "script":  "scripts/java_build.sh",
       "environment_vars" : [
       ],
