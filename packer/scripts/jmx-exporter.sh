@@ -4,7 +4,7 @@ set -eux
 
 DOWNLOAD_FILE="jmx_prometheus_javaagent.jar"
 DOWNLOAD_URL="https://s3.amazonaws.com/lifeway-binaries/public/${DOWNLOAD_FILE}"
-JMXFOLDER = "jmx_exporter"
+JMXFOLDER="jmx_exporter"
 cd /tmp
 mkdir ${JMXFOLDER}
 curl -o ${JMXFOLDER}/${DOWNLOAD_FILE} ${DOWNLOAD_URL}
